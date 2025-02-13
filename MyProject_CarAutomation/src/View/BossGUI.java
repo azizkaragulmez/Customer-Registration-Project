@@ -84,8 +84,7 @@ public class BossGUI extends JFrame {
     public static void main (String [] args){
             helper.setlayout();
             Boss boss1= new Boss();
+            
             BossGUI bossGUI = new BossGUI(boss1);
-
-
     }
 }
