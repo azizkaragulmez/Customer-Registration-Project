@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class BossGUI extends JFrame {
     private JPanel wrapper;
@@ -21,7 +23,7 @@ public class BossGUI extends JFrame {
     private JTextField fld_boss_tel;
     private JComboBox cbm_boss_marka;
     private JTextField fld_boss_model;
-    private JComboBox comboBox1;
+    private JComboBox cmb_boss_year;
     private JTextArea txtarea_boss_work;
     private JTextField fld_boss_money;
     private JButton btn_boss_added;
@@ -31,7 +33,7 @@ public class BossGUI extends JFrame {
     private Object[] row_boss_list;   //Jtableın satrına ekleceklerini tutmak için oluşturduk
 
 
-    private Boss boss; //biz veritabanından çekerken Boss türünde çekiceğimiz için bir değişken tanımladık
+    private Boss boss; //biz veritabanından çekerken Boss.java türünde çekiceğimiz için bir değişken tanımladık
     public BossGUI (Boss boss){
         this.boss=boss;
 
@@ -62,6 +64,38 @@ public class BossGUI extends JFrame {
         });
 
 
+        //Ekle Butonu
+        btn_boss_added.addActionListener(e -> {
+
+            if(fld_boss_name.getText().length()==0 || fld_boss_tel.getText().length()==0 || fld_boss_money.getText().length() == 0 || fld_boss_model.getText().length() == 0 ){
+                helper.showMsg("fill");
+
+            }else {
+                String User_name =fld_boss_name.getText();
+                String User_tel = fld_boss_tel.getText();
+                String User_car = cbm_boss_marka.getSelectedItem().toString();
+                String User_carModel= fld_boss_model.getText();
+                int User_carYear = Integer.parseInt(cmb_boss_year.getSelectedItem().toString());
+                String User_work = txtarea_boss_work.getText();
+                int User_money= Integer.parseInt(fld_boss_money.getText());
+                if (Boss.add(User_name,User_tel,User_car,User_carModel,User_carYear,User_work,User_money)){
+                    helper.showMsg("done");
+                    loadBossModel();
+                }
+            }
+        });
+
+        //telefon textfieldı dinliyoruz
+        fld_boss_tel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) { // Eğer rakam değilse
+                    e.consume(); // Tuş girişini engelle
+                }
+            }
+        });
     }
 
     public void loadBossModel(){
