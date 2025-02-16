@@ -178,7 +178,52 @@ public class Boss {
     }
 
 
+    //Arama işlemi
+    public static ArrayList <Boss> searchBossgetList (String query) {
+        ArrayList<Boss> bossList = new ArrayList<>();
+
+        Boss obj;
+        try {
+            Statement st = DB.getInstance().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()){
+                obj = new Boss();
+                obj.setUser_id(rs.getInt("User_id"));
+                obj.setUser_name(rs.getString("User_name"));
+                obj.setUser_tel(rs.getString("User_tel"));
+                obj.setUser_car(rs.getString("User_car"));
+                obj.setUser_carModel(rs.getString("User_carModel"));
+                obj.setUser_carYear(rs.getInt("User_carYear"));
+                obj.setUser_work(rs.getString("User_work"));
+                obj.setUser_money(rs.getInt("User_money"));
+                obj.setUser_Date(rs.getString("User_Date"));
+
+                bossList.add(obj);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return bossList;
     }
+
+    //Arama işlemi için
+    public static String searchQuery(String User_name, String User_tel) {
+        String query = "SELECT * FROM user WHERE 1=1 ";
+
+        if (!User_name.isEmpty()) {
+            query += "AND User_name LIKE '%" + User_name + "%' ";
+        }
+        if (!User_tel.isEmpty()) {
+            query += "AND User_Tel LIKE '%" + User_tel + "%' ";
+        }
+
+        return query;
+    }
+
+}
+
+
+
 
 
 

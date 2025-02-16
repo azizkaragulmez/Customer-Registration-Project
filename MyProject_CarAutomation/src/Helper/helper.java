@@ -57,6 +57,21 @@ public class helper {
         JOptionPane.showMessageDialog(null,msg,title,JOptionPane.INFORMATION_MESSAGE);
     }
 
+
+
+    public static boolean confirm(String str){
+        optionPageTR();
+        String  msg;
+        switch (str){
+            case "sure":
+                msg = "Bu işlemi gerçekleştirmek istediğinize emin misiniz?";
+                break;
+            default:
+                msg = str;
+        }
+        return   JOptionPane.showConfirmDialog(null, msg, "Son Kararın mı ?" , JOptionPane.YES_NO_OPTION)==0; // 0 a eşitse true
+    }
+
     //Ok yazan yeri değiştirmek için metod
     public static void optionPageTR() {
         UIManager.put("OptionPane.okButtonText", "Tamam");  //Bu swing dökümasyondan baktı ve ok yazan yeri tamamla değiştirdik

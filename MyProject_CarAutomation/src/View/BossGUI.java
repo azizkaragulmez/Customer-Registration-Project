@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class BossGUI extends JFrame {
@@ -32,6 +33,10 @@ public class BossGUI extends JFrame {
     private JButton btn_boss_added;
     private JButton btn_boss_delete;
     private JTextField fld_boss_ID;
+    private JTextField fld_boss_serachname;
+    private JTextField fld_boss_search_tel;
+    private JButton btn_boss_search;
+    private JButton çıkışYapButton;
 
 
     private DefaultTableModel mdl_boss_list;   //verilerimizi modeller ile katarıyoruz
@@ -42,14 +47,14 @@ public class BossGUI extends JFrame {
     public BossGUI (Boss boss){
         this.boss=boss;
 
-
         add(wrapper);
-        setSize(1200,600);
+        setSize(1300,750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle(Config.PROJECT_TİTLE);
         setVisible(true);
         setResizable(false);
+
 
 
         mdl_boss_list = new DefaultTableModel();
@@ -68,6 +73,25 @@ public class BossGUI extends JFrame {
        // fld_boss_ID.setText("ID Buraya Gelecek"); // ID değerini alıp yazabilirsin
 
 
+
+        //textfieldların boyutlarını belirleyelim
+        tbl_boss_list.getColumnModel().getColumn(0).setMaxWidth(25);
+        tbl_boss_list.getColumnModel().getColumn(1).setMaxWidth(150);
+        tbl_boss_list.getColumnModel().getColumn(2).setMaxWidth(100);
+        tbl_boss_list.getColumnModel().getColumn(3).setMaxWidth(100);
+        tbl_boss_list.getColumnModel().getColumn(4).setMaxWidth(75);
+        tbl_boss_list.getColumnModel().getColumn(5).setMaxWidth(50);
+        tbl_boss_list.getColumnModel().getColumn(6).setMaxWidth(450);
+        tbl_boss_list.getColumnModel().getColumn(7).setMaxWidth(70);
+        tbl_boss_list.getColumnModel().getColumn(8).setMaxWidth(80);
+
+        txtarea_boss_work.setLineWrap(true);
+        txtarea_boss_work.setWrapStyleWord(true);
+
+
+
+
+
         //Silme işleminde id yardımıylasiliyorduk ama string değerlerde yazılabiliyor ve bu hataya yol açıyor . Bizde tablodan seçerek tıklıyarak seçmek için model oluşturduk
         tbl_boss_list.getSelectionModel().addListSelectionListener(e -> {   //Bu şu demek seçilen değer üzerinde işlem yapmaya yarayan bir bölüm.(new ListSelectionListener())
             try {            //try catch içine almamızda ki neden seçerek yaptığımız silme işleminde seçili kaldığı için refresh edince hata veriyor
@@ -80,9 +104,7 @@ public class BossGUI extends JFrame {
         });
 
         //Çıkış Yap Butonu
-        btn_boss_çıkış.addActionListener(e -> {
-            dispose();
-        });
+
 
 
 
@@ -150,6 +172,7 @@ public class BossGUI extends JFrame {
                 if (helper.isFieldEmpty(fld_boss_ID)){
                     helper.showMsg("fill");
                 }else {
+                    if (helper.confirm("sure")){
                     int User_id= Integer.parseInt(fld_boss_ID.getText());
                     if (Boss.delete(User_id)){
                         helper.showMsg("done");
@@ -157,20 +180,55 @@ public class BossGUI extends JFrame {
                     }else {
                         helper.showMsg("error");
                     }
-                }
+                }}
         });
-        fld_boss_ID.addActionListener(new ActionListener() {
+
+        //Arama butonu
+        btn_boss_search.addActionListener(e -> {
+            String user_name = fld_boss_serachname.getText();
+            String user_tel = fld_boss_search_tel.getText();
+
+            if(helper.isFieldEmpty(fld_boss_serachname) && helper.isFieldEmpty(fld_boss_search_tel )){
+                helper.showMsg("Arama Yapmak İçin Alanı Doldurunuz");
+                loadBossModel();
+            }else {
+                String query = Boss.searchQuery(user_name,user_tel);
+                loadBossModel(Boss.searchBossgetList(query));
+            }
+
+        });
+        çıkışYapButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
             }
         });
     }
 
-    public void loadBossModel(){
+    //Bizim loadModelimiz vardı ama biz burda ArrayList türünde oluşturarak overloading yaptık
+    public void loadBossModel(ArrayList <Boss> list){
         DefaultTableModel clearModel = (DefaultTableModel) tbl_boss_list.getModel();
         clearModel.setRowCount(0);
 
+        for (Boss obj: list){
+            System.out.println("çalıştı");
+            row_boss_list[0]= obj.getUser_id();
+            row_boss_list[1]= obj.getUser_name();
+            row_boss_list[2]= obj.getUser_tel();
+            row_boss_list[3]= obj.getUser_car();
+            row_boss_list[4]= obj.getUser_carModel();
+            row_boss_list[5]= obj.getUser_carYear();
+            row_boss_list[6]= obj.getUser_work();
+            row_boss_list[7]= obj.getUser_money();
+            row_boss_list[8]=obj.getUser_Date();
+            mdl_boss_list.addRow(row_boss_list);
+        }
+    }
+
+
+    public void loadBossModel(){
+        DefaultTableModel clearModel = (DefaultTableModel) tbl_boss_list.getModel();
+        clearModel.setRowCount(0);
         for (Boss obj: Boss.getList()){
             row_boss_list[0]= obj.getUser_id();
             row_boss_list[1]= obj.getUser_name();
@@ -191,4 +249,6 @@ public class BossGUI extends JFrame {
             
             BossGUI bossGUI = new BossGUI(boss1);
     }
+
+
 }
