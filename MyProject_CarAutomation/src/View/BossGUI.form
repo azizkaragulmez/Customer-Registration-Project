@@ -95,6 +95,7 @@
                     <item value="Cadillac"/>
                     <item value="Chevrolet"/>
                     <item value="Chrysler"/>
+                    <item value="Cupra"/>
                     <item value="Citroën"/>
                     <item value="Dacia"/>
                     <item value="Daewoo"/>
@@ -148,6 +149,7 @@
                     <item value="Toyota"/>
                     <item value="Volkswagen"/>
                     <item value="Volvo"/>
+                    <item value="Yuki"/>
                   </model>
                 </properties>
               </component>

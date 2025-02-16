@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BossGUI extends JFrame {
     private JPanel wrapper;
@@ -78,7 +80,11 @@ public class BossGUI extends JFrame {
                 int User_carYear = Integer.parseInt(cmb_boss_year.getSelectedItem().toString());
                 String User_work = txtarea_boss_work.getText();
                 int User_money= Integer.parseInt(fld_boss_money.getText());
-                if (Boss.add(User_name,User_tel,User_car,User_carModel,User_carYear,User_work,User_money)){
+                String User_Date  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                if (User_tel.length()!=11){
+                    helper.showMsg("Lütfen telefon numarasını başında 0 olmak üzere 11 haneli giriniz");
+                }
+                else if(Boss.add(User_name,User_tel,User_car,User_carModel,User_carYear,User_work,User_money,User_Date)){
                     helper.showMsg("done");
                     loadBossModel();
                 }
@@ -87,6 +93,28 @@ public class BossGUI extends JFrame {
 
         //telefon textfieldı dinliyoruz
         fld_boss_tel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) { // Eğer rakam değilse
+                    e.consume(); // Tuş girişini engelle
+                }
+            }
+        });
+        //Ad soyad textfield dinliyoruz
+        fld_boss_name.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                char c = e.getKeyChar();
+                if (Character.isDigit(c)) { // Eğer rakam değilse
+                    e.consume(); // Tuş girişini engelle
+                }
+            }
+        });
+        //Ücret Kısmını dinliyoruz
+        fld_boss_money.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
@@ -111,6 +139,7 @@ public class BossGUI extends JFrame {
             row_boss_list[5]= obj.getUser_carYear();
             row_boss_list[6]= obj.getUser_work();
             row_boss_list[7]= obj.getUser_money();
+            row_boss_list[8]=obj.getUser_Date();
             mdl_boss_list.addRow(row_boss_list);
         }
     }

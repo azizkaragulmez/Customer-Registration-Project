@@ -21,14 +21,14 @@ public class Boss {
     private int User_carYear;
     private String User_work;
     private int User_money;
-    private Date User_Date;
+    private String User_Date;
 
 
     public Boss(){
 
     }
 
-    public Boss(int user_id, String user_name, String user_tel, String user_car, String user_carModel, int user_carYear, String user_work, int user_money) {
+    public Boss(int user_id, String user_name, String user_tel, String user_car, String user_carModel, int user_carYear, String user_work, int user_money,String user_Date) {
         User_id = user_id;
         User_name = user_name;
         User_tel = user_tel;
@@ -37,6 +37,7 @@ public class Boss {
         User_carYear = user_carYear;
         User_work = user_work;
         User_money = user_money;
+        User_Date=user_Date;
     }
 
     public int getUser_id() {
@@ -102,6 +103,12 @@ public class Boss {
     public void setUser_money(int user_money) {
         User_money = user_money;
     }
+    public String getUser_Date() {
+        return User_Date;
+    }
+    public void setUser_Date(String user_Date){
+        User_Date=user_Date;
+    }
 
     public static ArrayList<Boss> getList () {
         ArrayList<Boss> bossList = new ArrayList<>();
@@ -120,6 +127,7 @@ public class Boss {
                 obj.setUser_carYear(rs.getInt("User_carYear"));
                 obj.setUser_work(rs.getString("User_work"));
                 obj.setUser_money(rs.getInt("User_money"));
+                obj.setUser_Date(rs.getString("User_Date"));
 
                 bossList.add(obj);
             }
@@ -129,13 +137,11 @@ public class Boss {
         return bossList;
     }
 
-
-
-    public static boolean add ( String user_name, String user_tel, String user_car, String user_carModel, int user_carYear, String user_work, int user_money){
+    public static boolean add (String user_name, String user_tel, String user_car, String user_carModel, int user_carYear, String user_work, int user_money, String user_date){
 
 
 
-        String query = "INSERT INTO user ( User_name, User_tel, User_car, User_carModel, User_carYear, User_work, User_money) VALUES (?,?,?,?,?,?,?)";
+        String query = "INSERT INTO user ( User_name, User_tel, User_car, User_carModel, User_carYear, User_work, User_money,User_Date) VALUES (?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement pr = DB.getInstance().prepareStatement(query);
@@ -146,6 +152,7 @@ public class Boss {
             pr.setInt(5, user_carYear); // user_carYear zaten int, parse etmeye gerek yok!
             pr.setString(6, user_work);
             pr.setFloat(7, user_money); // user_money Float olduğu için setFloat kullanmalısın!
+            pr.setString(8,user_date);
             int response = pr.executeUpdate();
             if (response == -1){
                 helper.showMsg("Error");
