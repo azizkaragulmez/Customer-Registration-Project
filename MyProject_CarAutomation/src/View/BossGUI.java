@@ -6,6 +6,7 @@ import Model.Boss;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -29,6 +30,8 @@ public class BossGUI extends JFrame {
     private JTextArea txtarea_boss_work;
     private JTextField fld_boss_money;
     private JButton btn_boss_added;
+    private JButton btn_boss_delete;
+    private JTextField fld_boss_ID;
 
 
     private DefaultTableModel mdl_boss_list;   //verilerimizi modeller ile katarıyoruz
@@ -60,10 +63,27 @@ public class BossGUI extends JFrame {
 
         lbl_boss_welcome.setText(Config.PROJECT_TİTLE+" Araç Kayıt Otomasyonu");
 
+        fld_boss_ID.setEditable(false);  //Dışarıdan ID değer yazamazsın sadece mause ile tıklanan
+        fld_boss_ID.setBackground(Color.LIGHT_GRAY);
+       // fld_boss_ID.setText("ID Buraya Gelecek"); // ID değerini alıp yazabilirsin
+
+
+        //Silme işleminde id yardımıylasiliyorduk ama string değerlerde yazılabiliyor ve bu hataya yol açıyor . Bizde tablodan seçerek tıklıyarak seçmek için model oluşturduk
+        tbl_boss_list.getSelectionModel().addListSelectionListener(e -> {   //Bu şu demek seçilen değer üzerinde işlem yapmaya yarayan bir bölüm.(new ListSelectionListener())
+            try {            //try catch içine almamızda ki neden seçerek yaptığımız silme işleminde seçili kaldığı için refresh edince hata veriyor
+                String select_user_id = tbl_boss_list.getValueAt(tbl_boss_list.getSelectedRow(), 0).toString();    //Value et bize seçim yapılan konumu verir yani 0 sütun 1 satır gibi
+                //tbl_user_list den satırı aldık neere seçildiyse id 0 da olduğu için 0. sütunu aldık ve toString yani object döndürdük
+                fld_boss_ID.setText(select_user_id);
+            }catch (Exception exception){
+
+            }
+        });
+
         //Çıkış Yap Butonu
         btn_boss_çıkış.addActionListener(e -> {
             dispose();
         });
+
 
 
         //Ekle Butonu
@@ -122,6 +142,27 @@ public class BossGUI extends JFrame {
                 if (!Character.isDigit(c)) { // Eğer rakam değilse
                     e.consume(); // Tuş girişini engelle
                 }
+            }
+        });
+
+        //Silme Butonu işlemleri
+        btn_boss_delete.addActionListener(e -> {
+                if (helper.isFieldEmpty(fld_boss_ID)){
+                    helper.showMsg("fill");
+                }else {
+                    int User_id= Integer.parseInt(fld_boss_ID.getText());
+                    if (Boss.delete(User_id)){
+                        helper.showMsg("done");
+                        loadBossModel();
+                    }else {
+                        helper.showMsg("error");
+                    }
+                }
+        });
+        fld_boss_ID.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }

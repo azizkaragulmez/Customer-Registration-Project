@@ -163,6 +163,21 @@ public class Boss {
         }
         return true;
     }
+
+
+    //Silme İşlemleri
+    public static  boolean delete(int id){
+        String query ="DELETE FROM user WHERE User_id=?";
+        try {
+            PreparedStatement pr  = DB.getInstance().prepareStatement(query);
+            pr.setInt(1,id);
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     }
 
 
