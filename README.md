@@ -47,7 +47,7 @@ Bu proje, araç kayıt işlemlerini kolaylaştırmak ve yönetmek için gelişti
 
 ## Ekran Görüntüleri
 
-* ![Araç Kayıt Formu](ekran_goruntusu_1.png)
+* ![Araç Kayıt Formu](png1.PNG)
 * ![Araç Listesi](ekran_goruntusu_2.png)
 * ![Raporlama Ekranı](ekran_goruntusu_3.png)
 * ![Giriş Ekranı](ekran_goruntusu_4.png)
