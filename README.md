@@ -41,9 +41,7 @@ Bu proje, araç kayıt işlemlerini kolaylaştırmak ve yönetmek için gelişti
 ## Kullanım
 
 1.  Uygulamayı çalıştırın.
-2.  Kullanıcı adı ve şifrenizle giriş yapın (varsayılan kullanıcı bilgileri aşağıda belirtilmiştir).
-3.  Ana menüden istediğiniz işlemi seçin (örneğin, "Araç Kaydı", "Araç Listeleme").
-4.  Gerekli bilgileri girin ve işlemi tamamlayın.
+2.  Gerekli bilgileri girin ve işlemi tamamlayın.
 
 ## Ekran Görüntüleri
 
@@ -59,10 +57,6 @@ Katkılarınızı bekliyoruz! Projeye katkıda bulunmak için lütfen GitHub üz
 
 Sorularınız veya geri bildirimleriniz için lütfen \[azizkaragulmez07@gmail.com] ile iletişime geçin.
 
-## Ek Bilgiler
 
-* Veritabanı şeması (SQL dosyası) proje dizininde `veritabani_semasi.sql` olarak bulunabilir.
-* Uygulama, farklı işletim sistemlerinde (Windows, macOS, Linux) çalışabilir.
 
-## Notlar
 
